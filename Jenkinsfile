@@ -8,17 +8,17 @@ node {
         checkout scm
     }
 
-    stage('build docker image') {
-        docker.withServer("tcp://10.95.225.29:4243") {
-            docker.image('jenkins-runner:stable').inside("-v /opt/cache/.m2:/root/.m2 -m 100m --cpus 0.5") {
-                sh '''
-                    /bin/bash ./build.sh
-                '''
+    try {
+        stage('build docker image') {
+            docker.withServer("tcp://10.95.225.29:4243") {
+                docker.image('jenkins-runner:stable').inside("-v /opt/cache/.m2:/root/.m2 -m 100m --cpus 0.5") {
+                    sh '''
+                        /bin/bash ./build.sh
+                    '''
+                }
             }
         }
-    }
 
-    try {
         stage('run integration tests - provisions new stack') {
             docker.withServer("tcp://10.95.225.29:4243") {
                 docker.image('jenkins-runner:stable').inside("-m 100m --cpus 0.5") {
@@ -27,6 +27,7 @@ node {
                     '''
                 }
             }
+
         }
     } finally {
         junit 'integration-tests/**/*.xml' // this will throw any error in the try {}
