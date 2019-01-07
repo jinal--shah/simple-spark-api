@@ -12,6 +12,7 @@ _... code for java api, along with all assets required for build-test-deploy_
 * [... requires](#requires)
 * [... tour of this repo](#the-tour)
 * [... build](#build)
+* [... integration tests](#integration-tests)
 * [... run](#run)
     * [... env vars](#env-vars)
 * [... find current version](#current-version)
@@ -68,13 +69,18 @@ for
 
 ## BUILD
 
-Run `build.sh`.
+Run `./build.sh`.
+
+This runs maven to produce the artefact as well as
+the docker-build.
+
+### ... notes on build process
 
 Built using `docker run` rather than `docker build`
 to take advantage of volume mounts for m2 cache and
 src.
 
-Can take advantage of parallelism as is coded threadsafe.
+Can take advantage of build parallelism as is coded threadsafe.
 
 To build manually:
 
@@ -85,6 +91,17 @@ docker run -it --rm --name app-a-$(date +'%Y%m%d%H%M%S') \
     -w /usr/src/mymaven maven:3-jdk-8-alpine \
         mvn -T 1C clean package
 ```
+
+## INTEGRATION TESTS
+
+Run `./integration_tests.sh`
+
+This will docker-compose a stack on a docker-swarm node then launch
+a dockerised golang test runner to test this version of the simple
+java app.
+
+See [provision-stack/README.md](provision-stack/README.md) for more
+details about the ephemeral stack.
 
 ## RUN
 

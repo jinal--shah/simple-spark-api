@@ -6,7 +6,7 @@
 > or app A and B, dynamically load balanced by traefik
 >
 
-## docker swarm
+## provision on docker swarm
 
 ```bash
 # ... create stack for current git ref (tag or else sha1)
