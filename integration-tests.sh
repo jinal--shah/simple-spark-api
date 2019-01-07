@@ -154,7 +154,7 @@ export PATH=$GOBIN:$GOPATH/bin:$PATH
 apk --update --no-cache add git
 go get -u github.com/jstemmer/go-junit-report
 
-go test -v | go-junit-report
+go test -v | go-junit-report > results.xml
 
 EOF
 }

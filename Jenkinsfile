@@ -18,13 +18,17 @@ node {
         }
     }
 
-    stage('run integration tests - provisions new stack') {
-        docker.withServer("tcp://10.95.225.29:4243") {
-            docker.image('jenkins-runner:stable').inside("-m 100m --cpus 0.5") {
-                sh '''
-                    /bin/bash ./integration-tests.sh
-                '''
+    try {
+        stage('run integration tests - provisions new stack') {
+            docker.withServer("tcp://10.95.225.29:4243") {
+                docker.image('jenkins-runner:stable').inside("-m 100m --cpus 0.5") {
+                    sh '''
+                        /bin/bash ./integration-tests.sh
+                    '''
+                }
             }
         }
+    } finally {
+        junit 'integration-tests/**/*.xml'
     }
 }
