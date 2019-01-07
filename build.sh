@@ -18,7 +18,7 @@ app_version() {
 }
 
 mvn_build() {
-    rm -rf ./target 2>/dev/null || sudo rm -rf ./target 2>/dev/null
+    rm -rf ./target 2>/dev/null
 
     docker run -it --rm --name app-a-$(date +'%Y%m%d%H%M%S') \
         -v $HOST_M2_DIR:/root/.m2 \
@@ -26,8 +26,8 @@ mvn_build() {
         -w /usr/src/mymaven $MVN_IMAGE \
             mvn -T 1C clean package || return 1
 
-    mv ./target/$ARTEFACT . || cp ./target/$ARTEFACT .
-    rm -rf ./target 2>/dev/null || sudo rm -rf ./target 2>/dev/null || true
+    cp ./target/$ARTEFACT .
+    rm -rf ./target 2>/dev/null || true
 }
 
 docker_build() {
