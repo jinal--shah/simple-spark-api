@@ -1,5 +1,4 @@
 # swarm stack
-# vim: et sr sw=2 ts=2 smartindent:
 
 >
 > docker-compose file that creates stack
