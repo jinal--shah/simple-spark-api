@@ -10,7 +10,7 @@ node {
 
     try {
         stage('build docker image') {
-            docker.withServer("tcp://10.95.225.29:4243") {
+            docker.withServer("${env.DOCKER_HOST}") {
                 docker.image('jenkins-runner:stable').inside("-v /opt/cache/.m2:/root/.m2 -m 100m --cpus 0.5") {
                     sh '''
                         /bin/bash ./build.sh
@@ -20,7 +20,7 @@ node {
         }
 
         stage('run integration tests - provisions new stack') {
-            docker.withServer("tcp://10.95.225.29:4243") {
+            docker.withServer("${env.DOCKER_HOST}") {
                 docker.image('jenkins-runner:stable').inside("-m 100m --cpus 0.5") {
                     sh '''
                         /bin/bash -c "APP_A_INSTANCES=4 APP_B_INSTANCES=4 ./integration-tests.sh"
