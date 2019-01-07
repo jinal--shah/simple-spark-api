@@ -18,16 +18,16 @@ app_version() {
 }
 
 mvn_build() {
-    rm -rf ./target 2>/dev/null
+    sudo rm -rf ./target 2>/dev/null
 
-    docker run -it --rm --name app-a-$(date +'%Y%m%d%H%M%S') \
+    docker run -t --rm --name app-a-$(date +'%Y%m%d%H%M%S') \
         -v $HOST_M2_DIR:/root/.m2 \
         -v $PROJ_ROOT_DIR:/usr/src/mymaven `# map this git repo root` \
         -w /usr/src/mymaven $MVN_IMAGE \
             mvn -T 1C clean package || return 1
 
     cp ./target/$ARTEFACT .
-    rm -rf ./target 2>/dev/null || true
+    sudo rm -rf ./target 2>/dev/null || true
 }
 
 docker_build() {
@@ -73,10 +73,13 @@ main(){
     echo "GIT REF: $git_ref"
     echo "LABELS: $labels"
 
+    echo "INFO: running maven"
     mvn_build || return 1
 
+    echo "INFO: building docker image"
     docker_build "$git_ref" "$version" "$labels" || rc=1
-    rm -rf $ARTEFACT 2>/dev/null
+
+    sudo rm -rf $ARTEFACT 2>/dev/null
 
     return $rc
 }
