@@ -1,0 +1,9 @@
+**/target
+**/src
+**/.git
+**/integration-tests
+pom.xml
+README.md
+build.sh
+cfg.sh
+libs.sh

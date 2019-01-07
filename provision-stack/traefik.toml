@@ -1,0 +1,10 @@
+logLevel="INFO"
+debug=false
+
+[api]
+  dashboard = true
+
+[docker]
+  watch = true
+  swarmmode = true
+

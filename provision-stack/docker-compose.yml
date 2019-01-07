@@ -1,0 +1,56 @@
+# vim: et sr sw=2 ts=2 smartindent:
+version: "3.3"
+
+services:
+  traefik:
+    command: ["traefik", "--docker.constraints=tag==${STACK_ID}"]
+    image: traefik:1.7-alpine
+    networks:
+      - stack
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    configs:
+      - source: traefik-config
+        target: /etc/traefik/traefik.toml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 100M
+
+  appB:
+    image: simple-node-api:${APP_B_DOCKER_TAG}
+    networks:
+      - stack
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 100M
+
+  appA:
+    image: simple-spark-api:${STACK_ID}
+    environment:
+      - APP_B_URL=http://${STACK_ID}_appB:5000/message
+    networks:
+      - stack
+    deploy:
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 100M
+      labels:
+        - "traefik.docker.network=${STACK_ID}_stack"
+        - "traefik.port=4567"
+        - "traefik.backend=${STACK_ID}-java"
+        - "traefik.frontend.rule=Path:/message"
+        - "traefik.tags=${STACK_ID}"
+
+networks:
+  stack:
+    driver: overlay
+    attachable: true
+
+configs:
+  traefik-config:
+    file: traefik.toml
