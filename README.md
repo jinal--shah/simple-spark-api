@@ -1,4 +1,4 @@
-# Simple Java App
+# Simple Java Spark App
 
 _... code for java api, along with all assets required for build-test-deploy_
 
