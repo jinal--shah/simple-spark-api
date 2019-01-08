@@ -16,3 +16,6 @@ CURL_IMAGE="byrnedo/alpine-curl:latest" # to curl containers on private test sta
 GOLANG_IMAGE="golang:1.11.4-alpine3.8"  # for running integration tests
 MVN_IMAGE="maven:3-jdk-8-alpine"        # for building app
 
+APP_A_INSTANCES=2 # number used during integration tests (load balanced by traefik)
+APP_B_INSTANCES=2 # number used during integration tests (balanced by swarm dns round robin)
+

@@ -103,6 +103,9 @@ java app.
 See [provision-stack/README.md](provision-stack/README.md) for more
 details about the ephemeral stack.
 
+To scale number of instances, change vals `APP\_A\_INSTANCES` and
+`APP\_B\_INSTANCES` in cfg.sh
+
 ## RUN
 
 Running jar listens on port 4567.

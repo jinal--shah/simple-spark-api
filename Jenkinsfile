@@ -23,7 +23,7 @@ node {
             docker.withServer("${env.DOCKER_HOST}") {
                 docker.image('jenkins-runner:stable').inside("-m 100m --cpus 0.5") {
                     sh '''
-                        /bin/bash -c "APP_A_INSTANCES=4 APP_B_INSTANCES=4 ./integration-tests.sh"
+                        /bin/bash ./integration-tests.sh
                     '''
                 }
             }
